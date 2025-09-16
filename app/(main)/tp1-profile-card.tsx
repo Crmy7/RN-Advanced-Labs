@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import { Link } from "expo-router";
+import React, { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ProfileCard() {
@@ -12,6 +13,10 @@ export default function ProfileCard() {
   
   const timerRef = useRef<number | null>(null);
   const followersRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    console.log("👤 ProfileCard - Écran Profile Card monté");
+  }, []);
 
   const handleFollow = () => {
     setIsFollowing((prev) => {
@@ -65,35 +70,45 @@ export default function ProfileCard() {
         Product Designer
       </Text>
       <Text style={styles.followers}>{followers} followers</Text>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          isFollowing ? styles.buttonFollowing : styles.buttonFollow,
-        ]}
-        onPress={handleFollow}
-      >
-        <Text
-          style={[styles.buttonText, isFollowing && styles.buttonTextFollowing]}
+      
+      {/* Dual buttons row */}
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            isFollowing ? styles.buttonFollowing : styles.buttonFollow,
+          ]}
+          onPress={handleFollow}
         >
-          {isFollowing ? "Unfollow" : "Follow"}
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={[styles.buttonText, isFollowing && styles.buttonTextFollowing]}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </Text>
+        </TouchableOpacity>
 
-      {/* Start/Reset timer */}
-      <TouchableOpacity
-        style={[
-          styles.timerButton,
-          isTimerRunning ? styles.resetButton : styles.startButton,
-        ]}
-        onPress={handleStartReset}
-      >
-        <Text style={styles.timerButtonText}>
-          {isTimerRunning ? "Reset" : "Start"}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.timerButton,
+            isTimerRunning ? styles.resetButton : styles.startButton,
+          ]}
+          onPress={handleStartReset}
+        >
+          <Text style={styles.timerButtonText}>
+            {isTimerRunning ? "Reset" : "Start"}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Timer */}
       <Text style={styles.timer}>{timer} seconds</Text>
+
+
+      <Link href="/detail/42" asChild>
+          <TouchableOpacity style={styles.detailButton}>
+            <Text style={styles.detailButtonText}>Voir Détail (ID: 42)</Text>
+          </TouchableOpacity>
+        </Link>
     </View>
   );
 }
@@ -101,8 +116,9 @@ export default function ProfileCard() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     minWidth: 300,
+    minHeight: "100%",
     padding: 24,
     gap: 8,
     borderRadius: 16,
@@ -151,11 +167,16 @@ const styles = StyleSheet.create({
     color: "#666",
     marginBottom: 16,
   },
+  buttonRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 8,
+  },
   button: {
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
-    minWidth: 100,
+    flex: 1,
   },
   buttonFollow: {
     backgroundColor: "#3b82f6",
@@ -180,9 +201,9 @@ const styles = StyleSheet.create({
   },
   timerButton: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
-    marginTop: 8,
+    paddingVertical: 12,
+    borderRadius: 8,
+    flex: 1,
   },
   startButton: {
     backgroundColor: "green",
@@ -194,5 +215,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
     textAlign: "center",
+  },
+  detailButton: {
+    backgroundColor: "#3b82f6",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  detailButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
