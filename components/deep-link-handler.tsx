@@ -1,113 +1,128 @@
-import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
-import { Linking } from 'react-native';
+import { usePathname, useRouter } from "expo-router";
+import { useEffect, useRef } from "react";
+import { Linking } from "react-native";
 
 /**
- * Composant pour gérer les deep links entrants
+ * Gère les deep links entrants (expo go et schéma natif).
+ * - Ignore l’URL racine Expo Go (exp://host:port) pour éviter une 2e redirection vers /home
+ * - Ne navigue que si la cible est différente de la route courante
  */
 export function DeepLinkHandler() {
   const router = useRouter();
+  const pathname = usePathname();
+  const isHandlingRef = useRef(false);
 
   useEffect(() => {
-    let isHandlingLink = false;
+    const setHandling = (v: boolean) => (isHandlingRef.current = v);
 
-    // Gérer les liens lors du lancement de l'app
+    const navigateIfNeeded = (target: string) => {
+      // Normalise quelques cas
+      const normalized =
+        target === "/" || target === "" || target === "/home"
+          ? "/(main)/home"
+          : target.startsWith("/(main)") || target.startsWith("/(auth)")
+          ? target
+          : `/(main)${target.startsWith("/") ? target : `/${target}`}`;
+
+      if (pathname === normalized) {
+        // console.log("ℹ️ Déjà sur la bonne route → pas de navigation:", normalized);
+        return;
+      }
+      // console.log("🔄 Navigation via deep link →", normalized);
+      router.replace(normalized as any);
+    };
+
+    const parseToPath = (url: string): string | null => {
+      try {
+        // 1) Expo Go: exp://<host>:<port>[/path]
+        if (url.startsWith("exp://")) {
+          const match = url.match(/exp:\/\/[^/]+(.*)$/);
+          const path = (match?.[1] || "").trim();
+
+          // Si pas de chemin → c’est juste l’URL racine d’Expo Go, on ignore
+          if (!path || path === "/") {
+            // console.log("ℹ️ URL Expo Go racine détectée → on ignore");
+            return null;
+          }
+          // S’assure de commencer par /
+          return path.startsWith("/") ? path : `/${path}`;
+        }
+
+        // 2) Schéma natif: rnadvancedlabs://path
+        if (url.startsWith("rnadvancedlabs://")) {
+          const path = url.replace(/^rnadvancedlabs:\/\//, "").trim();
+          return path ? (path.startsWith("/") ? path : `/${path}`) : "/";
+        }
+
+        // Autres schémas: on ignore
+        // console.log("ℹ️ Schéma non géré →", url);
+        return null;
+      } catch (e) {
+        console.log("❌ Erreur parse URL:", e);
+        return null;
+      }
+    };
+
+    const handleDeepLink = (url: string) => {
+      if (isHandlingRef.current) return;
+      setHandling(true);
+
+      try {
+        // console.log("🔗 URL à traiter:", url);
+        const path = parseToPath(url);
+        if (!path) {
+          // Rien à faire (ex: exp://host:port sans chemin)
+          return;
+        }
+
+        // Petit délai pour laisser le temps au layout/stack d’être prêt
+        setTimeout(() => {
+          try {
+            if (path === "/tp1-profile-card") {
+              navigateIfNeeded("/(main)/tp1-profile-card");
+            } else if (path.startsWith("/detail/")) {
+              navigateIfNeeded(`/(main)${path}`);
+            } else if (path === "/home" || path === "/" || path === "") {
+              navigateIfNeeded("/(main)/home");
+            } else {
+              // console.log("⚠️ Chemin non reconnu, fallback → /home :", path);
+              navigateIfNeeded("/(main)/home");
+            }
+          } finally {
+            setHandling(false);
+          }
+        }, 300);
+      } catch (e) {
+        console.log("❌ Erreur handleDeepLink:", e);
+        setHandling(false);
+      }
+    };
+
     const handleInitialURL = async () => {
-      if (isHandlingLink) return;
-      
       try {
         const initialURL = await Linking.getInitialURL();
         if (initialURL) {
-          console.log('🔗 Deep link initial détecté:', initialURL);
+          // console.log("🔗 Deep link initial détecté:", initialURL);
           handleDeepLink(initialURL);
         }
       } catch (error) {
-        console.log('❌ Erreur récupération URL initiale:', error);
+        console.log("❌ Erreur récupération URL initiale:", error);
       }
     };
 
-    // Gérer les liens lorsque l'app est déjà ouverte
-    const handleURL = (event: { url: string }) => {
-      if (isHandlingLink) return;
-      
-      console.log('🔗 Deep link reçu:', event.url);
+    const subscription = Linking.addEventListener("url", (event) => {
+      // console.log("🔗 Deep link reçu (event):", event.url);
       handleDeepLink(event.url);
-    };
+    });
 
-    // Parser et router vers la bonne page
-    const handleDeepLink = (url: string) => {
-      if (isHandlingLink) return;
-      isHandlingLink = true;
-      
-      try {
-        console.log('🔗 URL à traiter:', url);
-        
-        let path = '';
-        
-        // Gérer les différents formats d'URL
-        if (url.includes('exp://')) {
-          // Format Expo Go: exp://10.25.128.212:8081/tp1-profile-card
-          const match = url.match(/exp:\/\/[^\/]+(.*)$/);
-          path = match ? match[1] : '';
-        } else if (url.startsWith('rnadvancedlabs://')) {
-          // Format schéma personnalisé: rnadvancedlabs://tp1-profile-card
-          path = url.replace(/^rnadvancedlabs:\/\//, '');
-        }
-        
-        // S'assurer que le path commence par /
-        if (path && !path.startsWith('/')) {
-          path = '/' + path;
-        }
-        
-        console.log('🎯 Chemin extrait:', path);
-        
-        // Délai pour laisser le temps à l'app de se charger
-        setTimeout(() => {
-          try {
-            // Router vers le bon écran
-            if (path === '/tp1-profile-card') {
-              console.log('🔄 Navigation vers profile card');
-              router.replace('/(main)/tp1-profile-card');
-            } else if (path.startsWith('/detail/')) {
-              const fullPath = `/(main)${path}`;
-              console.log('🔄 Navigation vers détail:', fullPath);
-              router.replace(fullPath as any);
-            } else if (path === '/home' || path === '/' || path === '') {
-              console.log('🔄 Navigation vers home');
-              router.replace('/(main)/home');
-            } else {
-              console.log('⚠️ Chemin non reconnu:', path, '- redirection vers home');
-              router.replace('/(main)/home');
-            }
-          } catch (navError) {
-            console.log('❌ Erreur navigation:', navError);
-            router.replace('/(main)/home');
-          } finally {
-            isHandlingLink = false;
-          }
-        }, 500);
-        
-      } catch (error) {
-        console.log('❌ Erreur parsing deep link:', error);
-        router.replace('/(main)/home');
-        isHandlingLink = false;
-      }
-    };
+    // Laisse le temps au Router de se monter avant d’analyser l’URL initiale
+    const timer = setTimeout(handleInitialURL, 600);
 
-    // Écouter les événements
-    const subscription = Linking.addEventListener('url', handleURL);
-    
-    // Délai pour s'assurer que l'app est prête
-    const timer = setTimeout(() => {
-      handleInitialURL();
-    }, 1000);
-
-    // Cleanup
     return () => {
-      subscription?.remove();
+      subscription.remove();
       clearTimeout(timer);
     };
-  }, [router]);
+  }, [router, pathname]);
 
-  return null; // Composant invisible
+  return null;
 }
