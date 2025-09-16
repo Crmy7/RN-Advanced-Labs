@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "rn-advanced-labs",
+    "name": "RN Advanced Labs",
     "slug": "rn-advanced-labs",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,9 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.exemple.rnadvancedlabs"
     },
     "android": {
+      "package": "com.exemple.rnadvancedlabs",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -43,6 +45,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      }
     }
   }
 }
