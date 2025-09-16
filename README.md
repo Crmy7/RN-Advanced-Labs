@@ -1,51 +1,75 @@
-# Welcome to your Expo app 👋
+# RN-Advanced-Labs 📱
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Laboratoire avancé de développement React Native avec Expo.
 
-## Get started
+## 🚀 Démarrage rapide
 
-1. Install dependencies
+1. Installation des dépendances
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Lancement de l'application
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+Vous pouvez ouvrir l'app dans :
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Expo Go](https://expo.dev/go)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 📚 Travaux Pratiques
 
-When you're ready, run:
+### 🎯 TP1 - Profile Card Screen
+**📁 Dossier :** [`app/tp1-profile-card/`](./app/tp1-profile-card/)
 
-```bash
-npm run reset-project
+**📋 Description :** 
+Écran de carte de profil interactif comprenant :
+- 👤 Affichage d'un profil utilisateur (photo, nom, rôle)
+- ❤️ Système de follow/unfollow avec styles dynamiques
+- ⏱️ Timer manuel avec contrôles start/reset
+- 📈 Compteur de followers qui s'incrémente automatiquement (toutes les 5 secondes)
+- 🎨 Design responsive avec effets d'ombre et animations
+
+**✅ Status :** Terminé (Tag: `tp1-done`)
+
+---
+
+## 📁 Arborescence du projet
+
+```
+app/
+├── _layout.tsx                 # Layout principal de l'app
+├── (tabs)/                     # Navigation par onglets
+│   ├── _layout.tsx            # Layout des onglets
+│   ├── explore.tsx            # Onglet Explorer
+│   └── index.tsx              # Onglet d'accueil
+├── modal.tsx                   # Écran modal
+├── tp1-profile-card/           # 🎯 TP1 - Profile Card
+│   ├── assets/                # Ressources du TP1
+│   │   └── img/
+│   ├── components/            # Composants du TP1
+│   ├── index.tsx              # Écran principal du TP1
+│   └── screens/               # Écrans du TP1
+└── tp2-minimal-screen/         # 🚧 TP2 - À venir
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🛠️ Technologies utilisées
 
-To learn more about developing your project with Expo, look at the following resources:
+- **React Native** avec Expo
+- **TypeScript**
+- **Expo Router** (file-based routing)
+- **React Hooks** (useState, useRef, useEffect)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📖 Ressources
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-# RN-Advanced-Labs
+- [Documentation Expo](https://docs.expo.dev/)
+- [Tutoriel Expo](https://docs.expo.dev/tutorial/introduction/)
+- [Communauté Discord](https://chat.expo.dev)
