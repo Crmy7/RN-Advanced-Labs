@@ -104,7 +104,7 @@ export default function ProfileCard() {
       <Text style={styles.timer}>{timer} seconds</Text>
 
 
-      <Link href="/detail/42" asChild>
+      <Link href="/(main)/detail/42" asChild>
           <TouchableOpacity style={styles.detailButton}>
             <Text style={styles.detailButtonText}>Voir Détail (ID: 42)</Text>
           </TouchableOpacity>

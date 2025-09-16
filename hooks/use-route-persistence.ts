@@ -16,7 +16,7 @@ export function useRoutePersistence() {
         // Ne pas sauvegarder la route racine "/"
         if (pathname && pathname !== '/') {
           await AsyncStorage.setItem(LAST_ROUTE_KEY, pathname);
-          console.log(`💾 Route sauvegardée automatiquement: ${pathname}`);
+          // console.log(`💾 Route sauvegardée automatiquement: ${pathname}`);
         }
       } catch (error) {
         console.log('❌ Erreur sauvegarde route:', error);

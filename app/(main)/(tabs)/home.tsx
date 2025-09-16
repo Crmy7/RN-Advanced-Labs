@@ -12,21 +12,27 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bienvenue 👋</Text>
-      <Text style={styles.subtitle}>
-        Laboratoires avancés React Native
-      </Text>
+      <Text style={styles.subtitle}>Laboratoires avancés React Native</Text>
+
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Navigation TP2</Text>
         <Text style={styles.cardDescription}>
           Structure de navigation avec Stack et Tabs configurée avec succès !
         </Text>
-        
-        <Link href="/detail/42" asChild>
+
+        <Link href="/(main)/detail/42" asChild>
           <TouchableOpacity style={styles.detailButton}>
             <Text style={styles.detailButtonText}>Voir Détail (ID: 42)</Text>
           </TouchableOpacity>
         </Link>
 
+        <View style={{ height: 12 }} />
+
+        <Link href="/(main)/(tabs)/tp1-profile-card" asChild>
+          <TouchableOpacity style={[styles.detailButton, { backgroundColor: "#10b981" }]}>
+            <Text style={styles.detailButtonText}>Aller au Profil</Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );
@@ -86,19 +92,6 @@ const styles = StyleSheet.create({
   detailButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "600",
-  },
-  deepLinkButton: {
-    backgroundColor: "#10b981",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 12,
-  },
-  deepLinkButtonText: {
-    color: "#fff",
-    fontSize: 14,
     fontWeight: "600",
   },
 });
