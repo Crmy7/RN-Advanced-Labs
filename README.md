@@ -56,13 +56,16 @@ Vous pouvez ouvrir l'app dans :
 
 ```
 app/
-  _layout.tsx                 # 🎯 LAYOUT RACINE UNIQUE (Tabs Navigator)
+  _layout.tsx                 # 🎯 LAYOUT RACINE (Stack avec header natif)
   index.tsx                   # Point d'entrée avec persistance
-  (main)/                     # Groupe principal (PAS de _layout.tsx)
-    home.tsx                  # Page d'accueil
-    tp1-profile-card.tsx      # Écran du TP1 (intégré à la navigation)
+  (main)/                     # Groupe principal avec Stack Navigator
+    _layout.tsx               # Stack avec bouton retour natif iOS
+    (tabs)/                   # Groupe onglets
+      _layout.tsx             # Tabs Navigator (Accueil + Profil)
+      home.tsx                # Page d'accueil
+      tp1-profile-card.tsx    # Écran du TP1 (intégré à la navigation)
     detail/
-      [id].tsx                # Écran dynamique avec validation paramètres
+      [id].tsx                # Écran dynamique avec bouton retour natif
   (auth)/                     # Groupe authentification (PAS de _layout.tsx)
     login.tsx                 # Écran de connexion (préparé pour l'avenir)
     register.tsx              # Écran d'inscription (préparé pour l'avenir)
@@ -89,10 +92,10 @@ constants/                    # Constantes de l'app
 
 | Route | Fichier | Type | Description | Navigation |
 |-------|---------|------|-------------|------------|
-| `/` | `app/index.tsx` | Redirect | Point d'entrée avec persistance | → `/(main)/home` |
-| `/(main)/home` | `app/(main)/home.tsx` | Tab | Page d'accueil principale | Onglet "Accueil" |
-| `/(main)/tp1-profile-card` | `app/(main)/tp1-profile-card.tsx` | Tab | Carte de profil interactive (TP1) | Onglet "Profile Card" |
-| `/(main)/detail/[id]` | `app/(main)/detail/[id].tsx` | Stack | Page de détail avec paramètre dynamique | Masquée des onglets |
+| `/` | `app/index.tsx` | Redirect | Point d'entrée avec persistance | → `/(main)/(tabs)/home` |
+| `/(main)/(tabs)/home` | `app/(main)/(tabs)/home.tsx` | Tab | Page d'accueil principale | Onglet "Accueil" |
+| `/(main)/(tabs)/tp1-profile-card` | `app/(main)/(tabs)/tp1-profile-card.tsx` | Tab | Carte de profil interactive (TP1) | Onglet "Profile Card" |
+| `/(main)/detail/[id]` | `app/(main)/detail/[id].tsx` | Stack | Page de détail avec bouton retour natif | Header iOS avec geste "liquid" |
 | `/(auth)/login` | `app/(auth)/login.tsx` | Stack | Écran de connexion | Modal d'authentification |
 | `/(auth)/register` | `app/(auth)/register.tsx` | Stack | Écran d'inscription | Modal d'authentification |
 
@@ -112,6 +115,7 @@ constants/                    # Constantes de l'app
 - ✅ **Navigation par onglets** gérée directement depuis la racine
 - ✅ **Écrans masqués** (détail, auth) via `href: null`
 - ✅ **Validation des paramètres** avec écran d'erreur 404
+- ✅ **Bouton retour natif iOS** avec geste "liquid" interactif
 
 ### Passage de paramètres
 - ✅ Route dynamique `/detail/[id]` avec validation robuste
@@ -282,6 +286,60 @@ rnadvancedlabs://detail/trop-long-id-invalide → Écran 404 (ID trop long)
 - ✅ Validation des paramètres avant navigation
 - ✅ Logs détaillés pour le débogage
 
+## 🔙 Bouton Retour Natif iOS
+
+### 🎯 **Configuration**
+
+L'application utilise le **Native Stack Navigator** d'Expo Router pour bénéficier du bouton retour natif iOS avec toutes ses fonctionnalités.
+
+**Structure :**
+```
+app/(main)/_layout.tsx    # Stack Navigator avec options natives
+├── (tabs)/               # Groupe Tabs (Accueil + Profil)
+└── detail/[id].tsx       # Écran avec bouton retour natif
+```
+
+### ✨ **Fonctionnalités natives iOS**
+
+- ✅ **Bouton chevron natif** : Icône iOS officielle sans texte (`headerBackButtonDisplayMode: "minimal"`)
+- ✅ **Geste "liquid"** : Glissement interactif depuis le bord gauche de l'écran
+- ✅ **Animation fluide** : Transition native iOS entre les écrans
+- ✅ **Haptic feedback** : Retour haptique lors de l'interaction
+
+### 🎮 **Utilisation**
+
+1. **Navigation vers Détail** : Depuis Accueil ou Profil → "Voir Détail (ID: 42)"
+2. **Retour par bouton** : Appuyer sur le chevron en haut à gauche
+3. **Retour par geste** : Glisser depuis le bord gauche vers la droite
+4. **Retour programmatique** : `router.back()` en cas d'erreur
+
+### ⚙️ **Configuration technique**
+
+```typescript
+// app/(main)/_layout.tsx
+<Stack
+  screenOptions={{
+    headerShown: true,
+    gestureEnabled: true,                    // Active le geste de retour
+    headerBackButtonDisplayMode: "minimal", // Masque le texte, garde l'icône
+  }}
+>
+  <Stack.Screen
+    name="detail/[id]"
+    options={{
+      title: "Détail",
+      presentation: "card", // Animation de présentation en carte
+    }}
+  />
+</Stack>
+```
+
+### 📱 **Comportement UX**
+
+- **TabBar masquée** : Sur l'écran Détail, seul le header Stack est visible
+- **TabBar visible** : Sur Accueil et Profil, les onglets restent accessibles
+- **Navigation cohérente** : Le retour ramène toujours vers l'onglet d'origine
+
 ---
 
 ## 🛠️ Technologies utilisées
@@ -322,6 +380,7 @@ rnadvancedlabs://detail/trop-long-id-invalide → Écran 404 (ID trop long)
 - [x] Deep linking complet (cold/warm/hot)
 - [x] Gestion d'erreurs et écrans 404
 - [x] Architecture propre avec un seul layout racine
+- [x] Bouton retour natif iOS avec geste "liquid" interactif
 
 ---
 

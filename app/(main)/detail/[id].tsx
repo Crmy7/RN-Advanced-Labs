@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -10,66 +9,38 @@ interface ValidationResult {
 }
 
 function validateId(id: string | string[]): ValidationResult {
-  // Gérer le cas où id est un array (ne devrait pas arriver avec [id].tsx)
   const idStr = Array.isArray(id) ? id[0] : id;
-  
+
   if (!idStr) {
     return { isValid: false, error: "ID manquant" };
   }
-
-  // Vérifier que c'est un nombre ou une chaîne valide
-  if (typeof idStr !== 'string') {
+  if (typeof idStr !== "string") {
     return { isValid: false, error: "Format d'ID invalide" };
   }
 
-  // Nettoyer l'ID (supprimer espaces, caractères spéciaux dangereux)
   const sanitizedId = idStr.trim();
-  
   if (sanitizedId.length === 0) {
     return { isValid: false, error: "ID vide" };
   }
-
-  // Vérifier la longueur (éviter les IDs trop longs)
   if (sanitizedId.length > 50) {
     return { isValid: false, error: "ID trop long" };
   }
-
-  // Optionnel : vérifier si c'est un nombre si requis
-  // if (!/^\d+$/.test(sanitizedId)) {
-  //   return { isValid: false, error: "L'ID doit être numérique" };
-  // }
 
   return { isValid: true, sanitizedId };
 }
 
 export default function DetailScreen() {
   const { id } = useLocalSearchParams();
-  const navigation = useNavigation();
   const router = useRouter();
-  const [validationResult, setValidationResult] = useState<ValidationResult>({ isValid: true });
+  const [validationResult, setValidationResult] = useState<ValidationResult>({
+    isValid: true,
+  });
 
   useEffect(() => {
-    console.log(`🔍 DetailScreen - Écran de détail monté avec ID: ${id}`);
-    
-    // Valider l'ID
-    const validation = validateId(id);
-    setValidationResult(validation);
+    console.log(`🔍 DetailScreen monté avec ID: ${id}`);
+    setValidationResult(validateId(id));
+  }, [id]);
 
-    if (validation.isValid) {
-      navigation.setOptions({
-        title: `Détail (ID: ${validation.sanitizedId})`,
-      });
-    } else {
-      navigation.setOptions({
-        title: "Erreur - ID invalide",
-      });
-      console.warn(`⚠️ ID invalide détecté: ${id} - ${validation.error}`);
-    }
-  }, [navigation, id]);
-
-  console.log(`🔄 DetailScreen - Rendu de l'écran de détail, ID: ${id}`);
-
-  // Afficher l'écran d'erreur si l'ID n'est pas valide
   if (!validationResult.isValid) {
     return (
       <View style={styles.container}>
@@ -78,14 +49,12 @@ export default function DetailScreen() {
           <Text style={styles.errorTitle}>ID Invalide</Text>
           <Text style={styles.errorMessage}>{validationResult.error}</Text>
           <Text style={styles.errorDetails}>
-            ID reçu : "{Array.isArray(id) ? id.join(', ') : id}"
+            ID reçu : "{Array.isArray(id) ? id.join(", ") : id}"
           </Text>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.backButton}
-            onPress={() => {
-              router.replace('/(main)/home');
-            }}
+            onPress={() => router.replace("/(main)/(tabs)/home")}
           >
             <Text style={styles.backButtonText}>← Retour à l'accueil</Text>
           </TouchableOpacity>
@@ -103,8 +72,8 @@ export default function DetailScreen() {
         <Text style={styles.validBadge}>✅ ID validé</Text>
       </View>
       <Text style={styles.description}>
-        Cet écran utilise un paramètre dynamique récupéré via l'URL.
-        L'ID a été validé et nettoyé pour la sécurité.
+        Cet écran utilise un paramètre dynamique récupéré via l'URL. L'ID a été
+        validé et nettoyé pour la sécurité.
       </Text>
     </View>
   );
