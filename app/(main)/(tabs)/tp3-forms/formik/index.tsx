@@ -30,7 +30,7 @@ export default function FormikFormScreen() {
   // 📊 Instrumentation : Log des re-rendus du composant principal
   const renderCount = useRef(0);
   renderCount.current += 1;
-  console.log(`🔧 [Formik] Composant principal - Rendu #${renderCount.current}`);
+  // console.log(`🔧 [Formik] Composant principal - Rendu #${renderCount.current}`);
 
   // Références pour la navigation entre les champs
   const passwordRef = useRef<TextInput | null>(null);
