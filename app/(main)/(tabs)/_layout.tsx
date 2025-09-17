@@ -29,6 +29,16 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="tp3-forms"
+        options={{
+          title: "Formulaires",
+          headerShown: false, // Le stack gère les headers
+          tabBarIcon: ({ color }) => (
+            <IconSymbol name="doc.text.fill" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
