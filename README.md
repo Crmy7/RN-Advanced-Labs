@@ -23,47 +23,186 @@ Vous pouvez ouvrir l'app dans :
 
 ---
 
-## 📚 Travaux Pratiques
+# Travaux Pratiques
 
-### 🎯 TP1 - Profile Card Screen
-**📁 Localisation :** [`app/(main)/tp1-profile-card.tsx`](./app/(main)/tp1-profile-card.tsx)
+## TP1 - Profile Card Screen
 
-**📋 Description :** 
+### **Localisation**
+[`app/(main)/(tabs)/tp1-profile-card.tsx`](./app/(main)/(tabs)/tp1-profile-card.tsx)
+
+### **Description**
 Écran de carte de profil interactif comprenant :
-- 👤 Affichage d'un profil utilisateur (photo, nom, rôle)
-- ❤️ Système de follow/unfollow avec styles dynamiques
-- ⏱️ Timer manuel avec contrôles start/reset
-- 📈 Compteur de followers qui s'incrémente automatiquement (toutes les 5 secondes)
-- 🎨 Design responsive avec effets d'ombre et animations
+- **Affichage profil** : Photo, nom, rôle utilisateur
+- **Follow/Unfollow** : Système interactif avec styles dynamiques
+- **Timer manuel** : Contrôles start/reset avec état local
+- **Auto-increment** : Compteur de followers (toutes les 5 secondes)
+- **Design moderne** : Responsive avec effets d'ombre et animations
 
-**✅ Status :** Terminé (Tag: `tp1-done`)
+### **Objectifs pédagogiques**
+- [x] État local avec `useState` et `useRef`
+- [x] Gestion des timers et intervalles
+- [x] Styles dynamiques et animations
+- [x] Design responsive et moderne
 
-### 🎯 TP2 - Navigation, Persistance & Deep Linking avec Expo Router
-**📁 Localisation :** Architecture complète `app/`
-
-**📋 Description :**
-- 🧭 Navigation multi-écrans avec **Expo Router** (file-based routing)
-- 📱 Architecture **Stack** et **Tabs** avec layouts imbriqués
-- 🔗 **Passage de paramètres** dynamiques avec validation
-- 💾 **Persistance de l'état de navigation** (retour à la dernière page)
-- 🌐 **Deep linking** complet (liens internes/externes)
-
-**✅ Status :** Terminé (Tag: `tp2-done`)
+### **Status** 
+**Terminé** (Tag: `tp1-done`)
 
 ---
 
-## 🏗️ Architecture du Projet
+## TP2 - Navigation, Persistance & Deep Linking
+
+### **Localisation**
+Architecture complète `app/` avec Expo Router
+
+### **Description**
+- **Navigation multi-écrans** avec Expo Router (file-based routing)
+- **Architecture Stack + Tabs** avec layouts imbriqués
+- **Paramètres dynamiques** avec validation robuste
+- **Persistance navigation** (retour à la dernière page)
+- **Deep linking complet** (cold/warm/hot start)
+- **Bouton retour natif** iOS avec geste "liquid"
+
+### **Objectifs pédagogiques**
+- [x] Architecture file-based routing avec Expo Router
+- [x] Navigation par onglets et stack imbriqués
+- [x] Passage de paramètres avec validation
+- [x] Persistance de l'état de navigation
+- [x] Deep linking complet (cold/warm/hot)
+- [x] Gestion d'erreurs et écrans 404
+- [x] Architecture propre avec un seul layout racine
+- [x] Bouton retour natif iOS avec geste "liquid" interactif
+
+### **Status**
+**Terminé** (Tag: `tp2-done`)
+
+### **Navigation et Deep Linking**
+
+#### **Table des Routes**
+
+| Route | Description | Type | Navigation |
+|-------|-------------|------|------------|
+| `/` | Point d'entrée avec persistance | Redirect | → `/(main)/(tabs)/home` |
+| `/(main)/(tabs)/home` | Page d'accueil avec liens vers TP3 | Tab | Onglet "Accueil" |
+| `/(main)/(tabs)/tp1-profile-card` | Carte de profil interactive (TP1) | Tab | Onglet "Profil" |
+| `/(main)/(tabs)/tp3-forms` | Vue d'ensemble des formulaires | Tab | Onglet "Formulaires" |
+| `/(main)/(tabs)/tp3-forms/formik` | Formulaire Formik + Yup | Stack | Accès direct en 2 taps |
+| `/(main)/(tabs)/tp3-forms/rhf` | Formulaire RHF + Zod | Stack | Accès direct en 2 taps |
+| `/(main)/detail/[id]` | Page de détail avec bouton retour natif | Stack | Header iOS avec geste "liquid" |
+
+#### **Deep Links disponibles**
+
+```bash
+# Navigation principale
+rnadvancedlabs://                    → Page d'accueil
+rnadvancedlabs://tp1-profile-card    → Profile Card  
+
+# Navigation avec paramètres
+rnadvancedlabs://detail/42           → Écran de détail (ID: 42)
+rnadvancedlabs://detail/123          → Écran de détail (ID: 123)
+
+# Navigation TP3 - Formulaires
+rnadvancedlabs://tp3-forms           → Vue d'ensemble des formulaires
+rnadvancedlabs://tp3-forms/formik    → Formulaire Formik + Yup
+rnadvancedlabs://tp3-forms/rhf       → Formulaire RHF + Zod
+
+# Gestion d'erreurs
+rnadvancedlabs://detail/             → Écran 404 (ID manquant)
+```
+
+#### **Bouton Retour Natif iOS**
+
+- **Bouton chevron natif** : Icône iOS officielle sans texte
+- **Geste "liquid"** : Glissement interactif depuis le bord gauche
+- **Animation fluide** : Transition native iOS entre les écrans
+- **Haptic feedback** : Retour haptique lors de l'interaction
+
+---
+
+## TP3 - Formulaires avancés avec validation temps réel
+
+### **Localisation**
+`app/(main)/(tabs)/tp3-forms/` avec arborescence structurée
+
+### **Description**
+- **Deux implémentations** de formulaires d'inscription identiques
+- **Formik + Yup** : Gestion classique avec `useField` et validation Yup
+- **React Hook Form + Zod** : Performance optimisée avec `Controller` et validation Zod
+- **Validation temps réel** avec messages d'erreur dynamiques
+- **Design moderne** avec placeholders personnalisés et animations
+- **Navigation croisée** pour comparer les deux approches
+- **Submit bloqué** si formulaire invalide ou non modifié
+- **Instrumentation** et mesure des performances avec logs
+
+### **Objectifs pédagogiques**
+- [x] Deux implémentations identiques (Formik + Yup vs RHF + Zod)
+- [x] Arborescence respectée avec validation/ et components/ séparés
+- [x] Navigation directe en 2 taps maximum depuis l'accueil
+- [x] Liens croisés Formik ⇄ RHF pour comparaison rapide
+- [x] Validation temps réel avec messages d'erreur
+- [x] Submit bloqué si formulaire invalide ou non modifié
+- [x] Design moderne avec placeholders personnalisés
+- [x] Retour fonctionnel avec header natif
+- [x] Instrumentation et mesure des performances avec logs
+
+### **Status**
+**Terminé** (Tag: `tp3-done`)
+
+### **Navigation TP3**
+
+#### **Accès direct en 2 taps maximum**
+
+**Depuis l'écran d'accueil :**
+1. **Tap 1** : Bouton "TP3 – Formik" → `/(main)/(tabs)/tp3-forms/formik`
+2. **Tap 1** : Bouton "TP3 – RHF" → `/(main)/(tabs)/tp3-forms/rhf`
+
+**Depuis l'onglet Formulaires :**
+1. **Tap 1** : Onglet "Formulaires" → Vue d'ensemble
+2. **Tap 2** : Bouton vers Formik ou RHF
+
+#### **Liens croisés**
+
+Chaque écran de formulaire contient un bouton de navigation croisée :
+- **Formik** → Bouton "Basculer vers RHF + Zod"
+- **RHF** → Bouton "Basculer vers Formik + Yup"
+
+#### **Retour fonctionnel**
+
+- **Header natif** avec bouton retour iOS
+- **Geste liquid** depuis le bord gauche
+- **Navigation programmatique** avec `router.back()`
+- **Pile de navigation** préservée
+
+---
+
+## Architecture du Projet
 
 ```
 app/
-  _layout.tsx                 # 🎯 LAYOUT RACINE (Stack avec header natif)
+  _layout.tsx                 # LAYOUT RACINE (Stack avec header natif)
   index.tsx                   # Point d'entrée avec persistance
   (main)/                     # Groupe principal avec Stack Navigator
     _layout.tsx               # Stack avec bouton retour natif iOS
     (tabs)/                   # Groupe onglets
-      _layout.tsx             # Tabs Navigator (Accueil + Profil)
-      home.tsx                # Page d'accueil
+      _layout.tsx             # Tabs Navigator (Accueil + Profil + Formulaires)
+      home.tsx                # Page d'accueil avec liens vers TP3
       tp1-profile-card.tsx    # Écran du TP1 (intégré à la navigation)
+      tp3-forms/              # TP3 - Formulaires avancés
+        _layout.tsx           # Stack Navigator pour les formulaires
+        index.tsx             # Vue d'ensemble des formulaires
+        formik/               # Implémentation Formik + Yup
+          index.tsx           # Écran principal Formik
+          validation/
+            schema.ts         # Schéma de validation Yup
+          components/
+            FormField.tsx     # Composant champ avec useField
+            CheckboxField.tsx # Composant checkbox avec useField
+        rhf/                  # Implémentation React Hook Form + Zod
+          index.tsx           # Écran principal RHF
+          validation/
+            schema.ts         # Schéma de validation Zod
+          components/
+            FormField.tsx     # Composant champ avec Controller
+            CheckboxField.tsx # Composant checkbox avec Controller
     detail/
       [id].tsx                # Écran dynamique avec bouton retour natif
   (auth)/                     # Groupe authentification (PAS de _layout.tsx)
@@ -88,45 +227,34 @@ constants/                    # Constantes de l'app
   theme.ts                    # Configuration des thèmes
 ```
 
-## 📋 Table des Routes
-
-| Route | Fichier | Type | Description | Navigation |
-|-------|---------|------|-------------|------------|
-| `/` | `app/index.tsx` | Redirect | Point d'entrée avec persistance | → `/(main)/(tabs)/home` |
-| `/(main)/(tabs)/home` | `app/(main)/(tabs)/home.tsx` | Tab | Page d'accueil principale | Onglet "Accueil" |
-| `/(main)/(tabs)/tp1-profile-card` | `app/(main)/(tabs)/tp1-profile-card.tsx` | Tab | Carte de profil interactive (TP1) | Onglet "Profile Card" |
-| `/(main)/detail/[id]` | `app/(main)/detail/[id].tsx` | Stack | Page de détail avec bouton retour natif | Header iOS avec geste "liquid" |
-| `/(auth)/login` | `app/(auth)/login.tsx` | Stack | Écran de connexion | Modal d'authentification |
-| `/(auth)/register` | `app/(auth)/register.tsx` | Stack | Écran d'inscription | Modal d'authentification |
-
-### Validation des Paramètres
+### **Validation des Paramètres**
 
 | Paramètre | Validation | Comportement |
 |-----------|------------|--------------|
-| `[id]` | ✅ Non vide, longueur < 50 caractères | Écran d'erreur 404 si invalide |
-| `[id]` | ✅ Nettoyage automatique (trim) | Sécurisation des entrées utilisateur |
-| `[id]` | ✅ Gestion des tableaux | Protection contre les paramètres malformés |
+| `[id]` | Non vide, longueur < 50 caractères | Écran d'erreur 404 si invalide |
+| `[id]` | Nettoyage automatique (trim) | Sécurisation des entrées utilisateur |
+| `[id]` | Gestion des tableaux | Protection contre les paramètres malformés |
 
-## 🎯 Fonctionnalités
+## Fonctionnalités
 
 ### Navigation
-- ✅ **UN SEUL LAYOUT** dans `app/_layout.tsx` avec Tabs Navigator
-- ✅ **Aucun layout** dans les groupes `(main)` et `(auth)`
-- ✅ **Navigation par onglets** gérée directement depuis la racine
-- ✅ **Écrans masqués** (détail, auth) via `href: null`
-- ✅ **Validation des paramètres** avec écran d'erreur 404
-- ✅ **Bouton retour natif iOS** avec geste "liquid" interactif
+- **UN SEUL LAYOUT** dans `app/_layout.tsx` avec Tabs Navigator
+- **Aucun layout** dans les groupes `(main)` et `(auth)`
+- **Navigation par onglets** gérée directement depuis la racine
+- **Écrans masqués** (détail, auth) via `href: null`
+- **Validation des paramètres** avec écran d'erreur 404
+- **Bouton retour natif iOS** avec geste "liquid" interactif
 
 ### Passage de paramètres
-- ✅ Route dynamique `/detail/[id]` avec validation robuste
-- ✅ Récupération sécurisée avec `useLocalSearchParams()`
-- ✅ Écran d'erreur 404 pour les paramètres invalides
-- ✅ Titre de page dynamique selon l'ID validé
-- ✅ Navigation de retour native et programmatique
+- Route dynamique `/detail/[id]` avec validation robuste
+- Récupération sécurisée avec `useLocalSearchParams()`
+- Écran d'erreur 404 pour les paramètres invalides
+- Titre de page dynamique selon l'ID validé
+- Navigation de retour native et programmatique
 
-## 🔄 Persistance de l'état de navigation
+## Persistance de l'état de navigation
 
-### Ce qui est persistant ✅
+### Ce qui est persistant
 
 1. **Route courante** : L'application retourne à la dernière page visitée
 2. **Paramètres d'URL** : Les paramètres dynamiques (ex: ID) sont conservés
@@ -271,6 +399,11 @@ rnadvancedlabs://detail/abc          → Écran de détail (ID: abc)
 # Gestion d'erreurs
 rnadvancedlabs://detail/             → Écran 404 (ID manquant)
 rnadvancedlabs://detail/trop-long-id-invalide → Écran 404 (ID trop long)
+
+# Navigation TP3 - Formulaires
+rnadvancedlabs://tp3-forms                   → Vue d'ensemble des formulaires
+rnadvancedlabs://tp3-forms/formik            → Formulaire Formik + Yup
+rnadvancedlabs://tp3-forms/rhf               → Formulaire RHF + Zod
 ```
 
 ### 🛠️ Implémentation technique
@@ -340,7 +473,6 @@ app/(main)/_layout.tsx    # Stack Navigator avec options natives
 - **TabBar visible** : Sur Accueil et Profil, les onglets restent accessibles
 - **Navigation cohérente** : Le retour ramène toujours vers l'onglet d'origine
 
----
 
 ## 🛠️ Technologies utilisées
 
@@ -364,27 +496,18 @@ app/(main)/_layout.tsx    # Stack Navigator avec options natives
 
 ---
 
-## 🎯 Objectifs pédagogiques atteints
+## Récapitulatif des TP
 
-### ✅ **TP1 - Composants interactifs**
-- [x] État local avec useState et useRef
-- [x] Gestion des timers et intervalles
-- [x] Styles dynamiques et animations
-- [x] Design responsive et moderne
+### **Objectifs pédagogiques globaux atteints**
 
-### ✅ **TP2 - Navigation avancée**
-- [x] Architecture file-based routing avec Expo Router
-- [x] Navigation par onglets et stack imbriqués
-- [x] Passage de paramètres avec validation
-- [x] Persistance de l'état de navigation
-- [x] Deep linking complet (cold/warm/hot)
-- [x] Gestion d'erreurs et écrans 404
-- [x] Architecture propre avec un seul layout racine
-- [x] Bouton retour natif iOS avec geste "liquid" interactif
+| TP | Thème | Objectifs clés | Technologies |
+|----|-------|----------------|-------------|
+| **TP1** | Composants interactifs | État local, timers, animations | React Hooks, StyleSheet |
+| **TP2** | Navigation avancée | File-based routing, deep linking | Expo Router, AsyncStorage |
+| **TP3** | Formulaires avancés | Validation, performance, comparaison | Formik+Yup vs RHF+Zod |
 
----
 
-## 📖 Ressources et documentation
+## Ressources et documentation
 
 - [Documentation Expo](https://docs.expo.dev/)
 - [Expo Router Documentation](https://docs.expo.dev/router/introduction/)
@@ -395,7 +518,7 @@ app/(main)/_layout.tsx    # Stack Navigator avec options natives
 
 ---
 
-## 🚀 Commandes utiles
+## Commandes utiles
 
 ```bash
 # Développement

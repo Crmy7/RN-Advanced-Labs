@@ -10,7 +10,7 @@ export default function ProfileCard() {
   const [timer, setTimer] = useState(0);
   // État du timer
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  
+
   const timerRef = useRef<number | null>(null);
   const followersRef = useRef<number | null>(null);
 
@@ -50,7 +50,7 @@ export default function ProfileCard() {
           return prev + 1;
         });
       }, 5000);
-      
+
       setIsTimerRunning(true);
     }
   };
@@ -70,7 +70,7 @@ export default function ProfileCard() {
         Product Designer
       </Text>
       <Text style={styles.followers}>{followers} followers</Text>
-      
+
       {/* Dual buttons row */}
       <View style={styles.buttonRow}>
         <TouchableOpacity
@@ -81,7 +81,10 @@ export default function ProfileCard() {
           onPress={handleFollow}
         >
           <Text
-            style={[styles.buttonText, isFollowing && styles.buttonTextFollowing]}
+            style={[
+              styles.buttonText,
+              isFollowing && styles.buttonTextFollowing,
+            ]}
           >
             {isFollowing ? "Unfollow" : "Follow"}
           </Text>
@@ -103,12 +106,11 @@ export default function ProfileCard() {
       {/* Timer */}
       <Text style={styles.timer}>{timer} seconds</Text>
 
-
       <Link href="/(main)/detail/42" asChild>
-          <TouchableOpacity style={styles.detailButton}>
-            <Text style={styles.detailButtonText}>Voir Détail (ID: 42)</Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity style={styles.detailButton}>
+          <Text style={styles.detailButtonText}>Voir Détail (ID: 42)</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 }
