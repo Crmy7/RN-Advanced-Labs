@@ -4,10 +4,10 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-nati
 
 export default function HomeScreen() {
   useEffect(() => {
-    console.log("🏠 HomeScreen - Écran d'accueil monté");
+    // console.log("🏠 HomeScreen - Écran d'accueil monté");
   }, []);
 
-  console.log("🔄 HomeScreen - Rendu de la page d'accueil");
+  // console.log("🔄 HomeScreen - Rendu de la page d'accueil");
 
   return (
     <ScrollView 
@@ -19,7 +19,7 @@ export default function HomeScreen() {
       <Text style={styles.subtitle}>Laboratoires avancés React Native</Text>
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Navigation TP2</Text>
+        <Text style={styles.cardTitle}>TP2 - Navigation</Text>
         <Text style={styles.cardDescription}>
           Structure de navigation avec Stack et Tabs configurée avec succès !
         </Text>
@@ -64,6 +64,19 @@ export default function HomeScreen() {
         <Link href="/(main)/(tabs)/tp3-forms" asChild>
           <TouchableOpacity style={styles.formsOverviewButton}>
             <Text style={styles.detailButtonText}>Vue d'ensemble</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>TP4 - Gestion des Robots</Text>
+        <Text style={styles.cardDescription}>
+          CRUD complet avec Zustand : créer, lister, modifier et supprimer des robots
+        </Text>
+
+        <Link href="/(main)/(tabs)/tp4-robots" asChild>
+          <TouchableOpacity style={styles.robotsButton}>
+            <Text style={styles.detailButtonText}>TP4 – Robots</Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -154,6 +167,13 @@ const styles = StyleSheet.create({
   },
   formsOverviewButton: {
     backgroundColor: "#8b5cf6",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  robotsButton: {
+    backgroundColor: "#f59e0b",
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,
