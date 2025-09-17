@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -75,6 +75,12 @@ export default function DetailScreen() {
         Cet écran utilise un paramètre dynamique récupéré via l'URL. L'ID a été
         validé et nettoyé pour la sécurité.
       </Text>
+
+      <Link href="/(main)/(tabs)/home" asChild style={{ marginTop: 24 }}>
+        <TouchableOpacity style={styles.backButton}>
+          <Text style={styles.backButtonText}>← Retour à l'accueil</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 }
