@@ -19,7 +19,7 @@ export default function Index() {
       if (!mounted) return;
 
       // Fallback propre vers /home
-      setTargetRoute(saved || "/(main)/home");
+      setTargetRoute(saved || "/(main)/(tabs)/home");
     })();
 
     return () => {
@@ -33,4 +33,5 @@ export default function Index() {
   }
 
   return <Redirect href={targetRoute as any} />;
+  // return <Redirect href="/(main)/(tabs)/home" />;
 }
