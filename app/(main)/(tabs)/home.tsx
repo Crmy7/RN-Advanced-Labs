@@ -71,10 +71,10 @@ export default function HomeScreen() {
       <View style={styles.card}>
         <Text style={styles.cardTitle}>TP4 - Gestion des Robots</Text>
         <Text style={styles.cardDescription}>
-          CRUD complet avec Zustand : créer, lister, modifier et supprimer des robots
+          Comparaison de deux approches : Zustand vs Redux Toolkit
         </Text>
 
-        <Link href="/(main)/(tabs)/tp4-robots" asChild>
+        <Link href="/(main)/(tabs)/robots" asChild>
           <TouchableOpacity style={styles.robotsButton}>
             <Text style={styles.detailButtonText}>TP4 – Robots</Text>
           </TouchableOpacity>

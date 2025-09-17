@@ -2,9 +2,9 @@ import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import RobotForm from '../../../../../components/robots/RobotForm';
-import { useGetRobotById, useUpdateRobot } from '../../../../../store/robotsStore';
-import type { Robot, RobotInput } from '../../../../../validation/robotSchema';
+import RobotForm from '../../../../components/robots/RobotForm';
+import { useGetRobotById, useUpdateRobot } from '../../../../store/robotsStore';
+import type { Robot, RobotInput } from '../../../../validation/robotSchema';
 
 export default function EditRobotScreen() {
   const router = useRouter();

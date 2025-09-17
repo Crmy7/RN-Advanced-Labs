@@ -1,18 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import {
-    FlatList,
-    RefreshControl,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import RobotListItem from '../../../../components/robots/RobotListItem';
-import { useRemoveRobot, useRobotsSorted } from '../../../../store/robotsStore';
-import type { Robot } from '../../../../validation/robotSchema';
+import RobotListItem from '../../../components/robots/RobotListItem';
+import { useRemoveRobot, useRobotsSorted } from '../../../store/robotsStore';
+import type { Robot } from '../../../validation/robotSchema';
 
 export default function RobotsListScreen() {
   const router = useRouter();
@@ -57,7 +57,6 @@ export default function RobotsListScreen() {
 
   const renderHeader = () => (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>Mes Robots</Text>
       <Text style={styles.headerSubtitle}>
         {robots.length} robot{robots.length !== 1 ? 's' : ''}
       </Text>
@@ -100,6 +99,7 @@ export default function RobotsListScreen() {
           <Ionicons name="add" size={28} color="#ffffff" />
         </TouchableOpacity>
       )}
+
     </View>
   );
 }

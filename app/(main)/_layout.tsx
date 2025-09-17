@@ -22,6 +22,34 @@ export default function MainLayout() {
           presentation: "card",
         }}
       />
+
+      {/* 👉 Zustand robots */}
+      <Stack.Screen
+        name="tp4-robots/index"
+        options={{ title: "Robots Zustand" }}
+      />
+      <Stack.Screen
+        name="tp4-robots/create"
+        options={{ title: "Nouveau robot", presentation: "card" }}
+      />
+      <Stack.Screen
+        name="tp4-robots/edit/[id]"
+        options={{ title: "Modifier le robot", presentation: "card" }}
+      />
+
+      {/* 👉 Redux robots */}
+      <Stack.Screen
+        name="tp4b-robots-rtk/index"
+        options={{ title: "Robots Redux" }}
+      />
+      <Stack.Screen
+        name="tp4b-robots-rtk/create"
+        options={{ title: "Créer un robot", presentation: "card" }}
+      />
+      <Stack.Screen
+        name="tp4b-robots-rtk/edit/[id]"
+        options={{ title: "Modifier le robot", presentation: "card" }}
+      />
     </Stack>
   );
 }
