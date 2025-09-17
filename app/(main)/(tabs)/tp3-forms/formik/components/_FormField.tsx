@@ -17,7 +17,7 @@ export const FormField = React.forwardRef<TextInput, FormFieldProps>(({
   // 📊 Instrumentation : Log des re-rendus par champ
   const renderCount = useRef(0);
   renderCount.current += 1;
-  console.log(`🔧 [Formik] FormField "${name}" - Rendu #${renderCount.current}`);
+  // console.log(`🔧 [Formik] FormField "${name}" - Rendu #${renderCount.current}`);
 
   const [field, meta, helpers] = useField(name);
   const hasError = meta.touched && meta.error;
