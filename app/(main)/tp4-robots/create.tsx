@@ -2,9 +2,9 @@ import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import RobotForm from '../../../../components/robots/RobotForm';
-import { useCreateRobot } from '../../../../store/robotsStore';
-import type { RobotInput } from '../../../../validation/robotSchema';
+import RobotForm from '../../../components/robots/RobotForm';
+import { useCreateRobot } from '../../../store/robotsStore';
+import type { RobotInput } from '../../../validation/robotSchema';
 
 export default function CreateRobotScreen() {
   const router = useRouter();
