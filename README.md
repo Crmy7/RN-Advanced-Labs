@@ -1194,3 +1194,154 @@ function RobotsListScreen() {
 Cette architecture combine le **meilleur des patterns reducer** (immutabilité, actions nommées, logique centralisée) avec la **simplicité de Zustand** (syntaxe moderne, TypeScript natif, performance optimisée) pour offrir une **gestion d'état moderne, performante et maintenable**.
 
 ---
+
+### TP4-B - Redux Toolkit : CRUD "Robots" (comparaison avec Zustand)
+
+#### Objectifs réalisés
+
+- **Store Redux Toolkit** construit avec slices, store, et hooks typés  
+- **CRUD complet** : Create / Read / Update / Delete pour la ressource Robot  
+- **Formulaire réutilisable** (create & edit) avec validation Formik + Yup  
+- **Navigation intégrée** (Expo Router) : liste ↔ formulaire  
+- **Persistance** avec redux-persist (AsyncStorage)  
+- **Selectors** memoized avec createSelector  
+- **Bonus** : createAsyncThunk simulé avec délai  
+
+#### Architecture implémentée
+
+```
+app/
+├── store.ts                    # configureStore + redux-persist
+├── hooks.ts                    # useAppDispatch / useAppSelector typés
+├── rootReducer.ts              # combineReducers
+└── (main)/(tabs)/tp4b-robots-rtk/
+    ├── index.tsx               # écran Liste des robots
+    ├── create.tsx              # écran Création
+    └── edit/[id].tsx           # écran Édition
+
+features/robots/
+├── robotsSlice.ts              # slice Redux Toolkit
+└── selectors.ts                # selectors memoized
+
+types/
+└── robot.ts                    # types Robot & RobotsState
+
+validation/
+└── robotSchemaRTK.ts           # schéma Yup pour validation
+
+components/robots/
+├── RobotFormRTK.tsx            # formulaire réutilisable
+├── RobotListItemRTK.tsx        # item de liste
+└── TypeSelectorRTK.tsx         # sélecteur de type
+```
+
+#### Dépendances utilisées
+
+- `@reduxjs/toolkit` - Redux Toolkit pour la gestion d'état
+- `react-redux` - Bindings React pour Redux
+- `redux-persist` - Persistance de l'état Redux
+- `@react-native-async-storage/async-storage` - Stockage local
+- `formik` + `yup` - Gestion et validation des formulaires
+- `uuid` - Génération d'identifiants uniques
+
+#### Store Redux Toolkit
+
+##### Slice robotsSlice avec reducers synchrones :
+- `createRobot` - Ajoute un robot avec vérification d'unicité du nom
+- `updateRobot` - Met à jour un robot avec validation
+- `deleteRobot` - Supprime un robot par ID
+- `clearError` - Nettoie les erreurs
+
+##### Thunk asynchrone `saveRobotAsync` 
+Simule une API avec délai de 500ms pour démontrer la gestion des états async (pending/fulfilled/rejected).
+
+##### Persistance automatique 
+L'état `robots.items` est automatiquement sauvegardé dans AsyncStorage via redux-persist.
+
+#### Selectors memoized
+
+- `selectRobots` - Liste complète des robots
+- `selectRobotById(id)` - Robot par ID
+- `selectRobotsSortedByName` - Robots triés par nom (memoized avec createSelector)
+- `selectRobotsLoading` - État de chargement
+- `selectRobotsError` - Erreurs éventuelles
+
+#### Validation métier
+
+- **Unicité du nom** : Refus si le nom existe déjà
+- **Validation des bornes** : Année entre 1950 et année courante
+- **Types énumérés** : Sélection via picker natif
+- **Feedback utilisateur** : Messages d'erreur contextuels
+
+#### UX Mobile optimisée
+
+- `KeyboardAvoidingView` pour éviter le clavier
+- Navigation entre champs avec `returnKeyType="next"`
+- Bouton Submit désactivé si formulaire invalide
+- Feedback haptique sur les actions
+- Confirmation de suppression avec alerte native
+- Pull-to-refresh sur la liste
+- FAB (Floating Action Button) pour créer
+- États de chargement avec spinners
+
+#### Navigation
+
+- **Liste** : `/(main)/(tabs)/tp4b-robots-rtk`
+- **Création** : `/(main)/(tabs)/tp4b-robots-rtk/create`
+- **Édition** : `/(main)/(tabs)/tp4b-robots-rtk/edit/[id]`
+- **Menu principal** : Bouton "TP4B – Robots (Redux)" ajouté
+
+#### Comparaison Zustand vs Redux Toolkit
+
+| Aspect | Zustand (TP4A) | Redux Toolkit (TP4B) |
+|--------|----------------|----------------------|
+| **Boilerplate** | Minimal | Plus verbeux mais structuré |
+| **DevTools** | Limité | Excellent support |
+| **Middleware** | Manuel | Intégré (thunks, persist) |
+| **TypeScript** | Simple | Plus complexe mais robuste |
+| **Selectors** | Basique | Memoization avancée |
+| **Async** | Promesses simples | createAsyncThunk structuré |
+| **Persistance** | Manuel | redux-persist intégré |
+
+#### Critères d'acceptation validés
+
+✅ L'état `robots.items` est persisté après redémarrage  
+✅ Provider Redux correctement installé dans `_layout.tsx`  
+✅ Validation stricte avec feedback utilisateur  
+✅ Formulaire unique réutilisé pour create & edit  
+✅ Navigation fluide avec retours appropriés  
+✅ CRUD complet avec gestion d'erreurs  
+✅ Selectors memoized pour optimiser les performances  
+✅ Thunk asynchrone avec états pending/fulfilled/rejected  
+
+#### Comment tester
+
+1. Lancer l'app : `npm start`
+2. Naviguer vers "TP4B – Robots (Redux)"
+3. Créer quelques robots avec différents types
+4. Tester la validation (noms dupliqués, années invalides)
+5. Modifier un robot existant
+6. Supprimer un robot (avec confirmation)
+7. Redémarrer l'app → vérifier la persistance
+8. Observer les états de chargement lors des opérations async
+
+#### Avantages Redux Toolkit vs Zustand
+
+**Redux Toolkit excelle pour :**
+- Applications complexes avec beaucoup d'état partagé
+- Équipes importantes nécessitant une structure stricte
+- Debugging avancé avec Redux DevTools
+- Middleware complexe (logging, analytics, etc.)
+- Patterns établis et documentation extensive
+
+**Zustand reste préférable pour :**
+- Prototypes rapides et applications simples
+- Équipes réduites privilégiant la vélocité
+- Courbe d'apprentissage réduite
+- Bundle size optimisé
+- Flexibilité maximale
+
+#### Status
+**Terminé** - Architecture Redux Toolkit complète avec comparaison détaillée vs Zustand
+
+---
