@@ -15,7 +15,7 @@ export default function ProfileCard() {
   const followersRef = useRef<number | null>(null);
 
   useEffect(() => {
-    console.log("👤 ProfileCard - Écran Profile Card monté");
+    // console.log("👤 ProfileCard - Écran Profile Card monté");
   }, []);
 
   const handleFollow = () => {

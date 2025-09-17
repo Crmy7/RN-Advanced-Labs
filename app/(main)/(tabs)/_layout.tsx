@@ -39,6 +39,16 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="tp4-robots"
+        options={{
+          title: "Robots",
+          headerShown: false, // Le stack gère les headers
+          tabBarIcon: ({ color }) => (
+            <IconSymbol name="gear.circle.fill" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

@@ -18,7 +18,7 @@ const FormField = React.forwardRef<TextInput, FormFieldProps>(({
   // 📊 Instrumentation : Log des re-rendus par champ
   const renderCount = useRef(0);
   renderCount.current += 1;
-  console.log(`⚡ [RHF] FormField "${name}" - Rendu #${renderCount.current}`);
+  // console.log(`⚡ [RHF] FormField "${name}" - Rendu #${renderCount.current}`);
 
   const { control, formState: { errors } } = useFormContext<RegistrationFormValues>();
   const error = errors[name];
