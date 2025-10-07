@@ -3,15 +3,15 @@ import * as Haptics from 'expo-haptics';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import {
-  Alert,
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+    Alert,
+    FlatList,
+    RefreshControl,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/_hooks';
 import RobotListItemRTK from '../../../components/robots/RobotListItemRTK';
 import { clearError, deleteRobot } from '../../../features/robots/robotsSlice';
 import { selectRobotsCount, selectRobotsError, selectRobotsSortedByName } from '../../../features/robots/selectors';

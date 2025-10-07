@@ -80,6 +80,19 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </Link>
       </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>TP5 - SQLite Offline</Text>
+        <Text style={styles.cardDescription}>
+          Base de données locale avec migrations, CRUD complet et export/import
+        </Text>
+
+        <Link href="/(main)/(tabs)/tp5-robots-db" asChild>
+          <TouchableOpacity style={styles.sqliteButton}>
+            <Text style={styles.detailButtonText}>🗄️ TP5 – Robots SQLite</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
     </ScrollView>
   );
 }
@@ -174,6 +187,13 @@ const styles = StyleSheet.create({
   },
   robotsButton: {
     backgroundColor: "#f59e0b",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  sqliteButton: {
+    backgroundColor: "#6366f1",
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,

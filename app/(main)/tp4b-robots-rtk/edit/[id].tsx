@@ -2,7 +2,7 @@ import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../app/_hooks';
 import RobotFormRTK from '../../../../components/robots/RobotFormRTK';
 import { clearError, saveRobotAsync, updateRobot } from '../../../../features/robots/robotsSlice';
 import { selectRobotById, selectRobotsError, selectRobotsLoading } from '../../../../features/robots/selectors';
