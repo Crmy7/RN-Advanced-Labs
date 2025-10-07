@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useAppSelector } from "../../../app/hooks";
+import { useAppSelector } from "../../../app/_hooks";
 import { selectRobotsCount } from "../../../features/robots/selectors";
 import { useRobotsStore } from "../../../store/robotsStore";
 
