@@ -15,13 +15,13 @@ export default function TP3FormsLayout() {
         }} 
       />
       <Stack.Screen 
-        name="formik" 
+        name="formik/index" 
         options={{ 
           title: 'Formik + Yup',
         }} 
       />
       <Stack.Screen 
-        name="rhf" 
+        name="rhf/index" 
         options={{ 
           title: 'RHF + Zod',
         }} 

@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
+import { RootState } from '../../app/_store';
 
 // Sélecteur de base pour les robots
 export const selectRobots = (state: RootState) => state.robots.items;

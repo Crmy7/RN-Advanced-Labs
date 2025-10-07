@@ -49,6 +49,16 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="tp5-robots-db"
+        options={{
+          title: "SQLite",
+          headerShown: false, // Le stack gère les headers
+          tabBarIcon: ({ color }) => (
+            <IconSymbol name="cylinder.fill" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

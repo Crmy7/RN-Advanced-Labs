@@ -6,6 +6,9 @@ export interface Robot {
   label: string;
   year: number;
   type: RobotType;
+  created_at?: number;
+  updated_at?: number;
+  archived?: number;
 }
 
 export interface RobotsState {
