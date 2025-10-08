@@ -1888,7 +1888,7 @@ rnadvancedlabs://tp6-camera/detail/[id]      # Détail photo
 #### Captures d'écran
 
 ##### Démo complète
-<img src="https://files.charlesremy.dev/tp6-record-all-features.gif" alt="Démo TP6 — parcours complet" style="max-width:200px !important;">
+[Démo TP6 — parcours complet](https://files.charlesremy.dev/tp6-record-all-features.gif)
 
 ##### Captures d'écran - Galerie vide et écran caméra
 <img src="./img/tp6/no_photos.PNG" alt="Galerie vide" style="max-width:200px !important;">
