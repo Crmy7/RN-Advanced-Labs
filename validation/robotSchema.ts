@@ -34,10 +34,7 @@ export const robotSchema = z.object({
     .trim(),
   
   year: z
-    .number({
-      required_error: 'L\'année est requise',
-      invalid_type_error: 'L\'année doit être un nombre',
-    })
+    .number()
     .int('L\'année doit être un nombre entier')
     .min(1950, 'L\'année doit être supérieure ou égale à 1950')
     .max(currentYear, `L'année ne peut pas être supérieure à ${currentYear}`),
@@ -48,10 +45,7 @@ export const robotSchema = z.object({
     RobotType.MEDICAL,
     RobotType.EDUCATIONAL,
     RobotType.OTHER,
-  ], {
-    required_error: 'Le type de robot est requis',
-    invalid_type_error: 'Type de robot invalide',
-  }),
+  ]),
 });
 
 export type RobotInput = z.infer<typeof robotSchema>;

@@ -89,7 +89,20 @@ export default function HomeScreen() {
 
         <Link href="/(main)/(tabs)/tp5-robots-db" asChild>
           <TouchableOpacity style={styles.sqliteButton}>
-            <Text style={styles.detailButtonText}>🗄️ TP5 – Robots SQLite</Text>
+            <Text style={styles.detailButtonText}>TP5 – Robots SQLite</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>TP6 - Caméra & Fichiers</Text>
+        <Text style={styles.cardDescription}>
+          Capture de photos avec gestion des permissions et stockage local
+        </Text>
+
+        <Link href="/(main)/(tabs)/tp6-camera" asChild>
+          <TouchableOpacity style={styles.cameraButton}>
+            <Text style={styles.detailButtonText}>TP6 – Caméra</Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -194,6 +207,13 @@ const styles = StyleSheet.create({
   },
   sqliteButton: {
     backgroundColor: "#6366f1",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  cameraButton: {
+    backgroundColor: "#ef4444",
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,

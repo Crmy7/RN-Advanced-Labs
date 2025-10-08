@@ -341,9 +341,16 @@ npm start
 
 ## Dépendances clés
 
+### Navigation et persistance
 - `expo-router` : Navigation file-based
 - `@react-native-async-storage/async-storage` : Persistance locale
 - `@expo/vector-icons` : Icônes pour les onglets
+
+### Caméra et fichiers (TP6)
+- `expo-camera` : Capture de photos et vidéos avec accès natif à la caméra de l'appareil
+- `expo-file-system` : Gestion des fichiers locaux (lecture, écriture, suppression) pour stocker les photos capturées
+- `expo-media-library` : Sauvegarde optionnelle des photos dans la galerie système de l'utilisateur
+- `@react-native-async-storage/async-storage` : Stockage des métadonnées des photos (déjà inclus)
 
 ## Test de la persistance
 
@@ -1669,5 +1676,227 @@ lib/
 rnadvancedlabs://tp5-robots-db         # Liste
 rnadvancedlabs://tp5-robots-db/create  # Création directe
 ```
+
+---
+
+### TP6 - Caméra & Stockage de Photos
+
+#### Localisation
+`app/(main)/tp6-camera/` avec architecture en couches
+
+#### Description
+Application complète de galerie photo avec capture, stockage local et gestion des permissions. Démontre une **architecture propre** avec séparation stricte des responsabilités entre UI, logique métier et stockage.
+
+**Fonctionnalités principales :**
+- Galerie de photos avec grille de miniatures
+- Écran de prise de vue dédié avec caméra avant/arrière
+- Écran de détail avec affichage plein écran, partage et suppression
+- Stockage local organisé avec métadonnées
+- Gestion complète des permissions caméra
+- Sauvegarde optionnelle dans la galerie système
+- Interface moderne et responsive
+
+#### Architecture en couches
+
+```
+app/(main)/(tabs)/tp6-camera/
+├── _layout.tsx              # Stack Navigator pour la section
+├── index.tsx                # Galerie (grille de miniatures)
+├── camera.tsx               # Écran de prise de vue
+└── detail/[id].tsx          # Écran de détail (afficher, supprimer, partager)
+
+lib/camera/
+├── types.ts                 # Types Photo, PhotoInput, Results
+├── storage.ts               # Fonctions: savePhoto, listPhotos, getPhoto, deletePhoto
+└── index.ts                 # Point d'entrée avec exports
+
+lib/hooks/
+└── usePhotoStorage.ts       # Hook stateful wrapper autour de storage.ts
+
+hooks/
+└── useCameraPermissions.ts  # Hook pour gestion permissions caméra
+
+components/camera/
+└── CameraPermissionGuard.tsx # Composant garde pour permissions
+```
+
+#### Séparation des responsabilités
+
+##### Couche de stockage (`lib/camera/storage.ts`)
+- **Responsabilité** : Gestion pure des fichiers et métadonnées
+- **Fonctions** : `savePhoto()`, `listPhotos()`, `getPhoto()`, `deletePhoto()`, `clearAllPhotos()`
+- **Stockage** : FileSystem pour les fichiers, AsyncStorage pour les métadonnées
+- **Aucune dépendance** : Pas d'imports React, fonctions pures
+
+##### Couche hooks (`lib/hooks/usePhotoStorage.ts`)
+- **Responsabilité** : Wrapper stateful React autour du stockage
+- **État géré** : `photos[]`, `isLoading`, `error`, `stats`
+- **Actions** : Versions async des fonctions de stockage avec gestion d'état
+- **Réactivité** : Mise à jour automatique de l'UI après modifications
+
+##### Couche UI (écrans)
+- **Responsabilité** : Interface utilisateur et flux de navigation uniquement
+- **Contrainte** : Aucun accès direct à FileSystem, tout passe par les services
+- **Consommation** : Utilise les hooks et fonctions des couches inférieures
+
+#### Types et interfaces
+
+```typescript
+interface Photo {
+  id: string;              // Identifiant unique
+  uri: string;             // Chemin vers le fichier
+  createdAt: Date;         // Date de création
+  size?: number;           // Taille en octets
+  filename?: string;       // Nom du fichier
+  dimensions?: {           // Dimensions de l'image
+    width: number;
+    height: number;
+  };
+}
+
+interface PhotoInput {
+  uri: string;             // URI source de la photo
+  size?: number;           // Taille optionnelle
+  dimensions?: {           // Dimensions optionnelles
+    width: number;
+    height: number;
+  };
+}
+```
+
+#### Fonctionnalités détaillées
+
+##### Galerie (index.tsx)
+- **Grille responsive** : 3 colonnes avec miniatures
+- **Pull-to-refresh** : Actualisation de la liste
+- **État vide** : Interface d'accueil avec CTA
+- **Statistiques** : Nombre de photos et taille totale
+- **Actions** : Bouton caméra, suppression globale
+- **Navigation** : Tap sur photo → écran détail
+
+##### Caméra (camera.tsx)
+- **Interface dédiée** : Plein écran pour la prise de vue
+- **Caméra avant/arrière** : Basculement avec animation
+- **Capture optimisée** : Qualité 0.8, pas de base64
+- **Sauvegarde automatique** : Stockage local + galerie système
+- **Feedback utilisateur** : États de chargement, confirmations
+- **Aperçu** : Miniature de la dernière photo prise
+
+##### Détail ([id].tsx)
+- **Affichage plein écran** : Image en haute résolution
+- **Informations complètes** : Date, taille, dimensions, ID
+- **Actions** : Partage natif, suppression avec confirmation
+- **Gestion d'erreurs** : Photo introuvable, fichier supprimé
+- **Navigation** : Retour galerie, suppression → retour auto
+
+#### Gestion des permissions
+
+##### Hook `useCameraPermissions`
+- **Vérification automatique** : Au montage du composant
+- **Demande contextuelle** : Au moment de l'utilisation
+- **Gestion des refus** : Interface explicite avec action "Ouvrir réglages"
+- **États gérés** : `hasPermission`, `isLoading`, `requestPermission()`
+
+##### Composant `CameraPermissionGuard`
+- **Protection d'accès** : Bloque l'accès sans permission
+- **Interface explicite** : Explications claires et boutons d'action
+- **Design cohérent** : Intégré au thème de l'application
+- **Fallback** : Action de retour en cas de refus persistant
+
+#### Stockage et persistance
+
+##### Stockage des fichiers
+- **Répertoire dédié** : `${FileSystem.documentDirectory}tp6_photos/`
+- **Nommage unique** : `photo_${timestamp}_${random}.jpg`
+- **Gestion d'erreurs** : Vérification d'existence, nettoyage automatique
+- **Optimisation** : Copie (pas de déplacement) pour préserver l'original
+
+##### Métadonnées
+- **AsyncStorage** : Clé `tp6_camera_photos`
+- **Sérialisation** : JSON avec conversion des dates
+- **Synchronisation** : Vérification cohérence fichiers ↔ métadonnées
+- **Performance** : Chargement unique, mise à jour incrémentale
+
+#### Objectifs pédagogiques
+
+- [x] **Architecture en couches** : Séparation stricte UI / Logique / Stockage
+- [x] **Services purs** : Fonctions sans dépendances React
+- [x] **Hooks stateful** : Wrapper React autour des services
+- [x] **Gestion d'erreurs** : Robustesse à tous les niveaux
+- [x] **Permissions natives** : Demande contextuelle, gestion des refus
+- [x] **Stockage hybride** : FileSystem + AsyncStorage + MediaLibrary
+- [x] **Navigation moderne** : Stack avec modales et animations
+- [x] **Interface responsive** : Adaptation aux différentes tailles d'écran
+- [x] **Patterns avancés** : Repository, Guard, Service Layer
+
+#### Navigation TP6
+
+```bash
+# Routes disponibles
+/(main)/(tabs)/tp6-camera                    # Galerie de photos (onglet)
+/(main)/(tabs)/tp6-camera/camera             # Écran de prise de vue
+/(main)/(tabs)/tp6-camera/detail/[id]        # Détail d'une photo
+
+# Deep links
+rnadvancedlabs://tp6-camera                  # Galerie (onglet)
+rnadvancedlabs://tp6-camera/camera           # Caméra directe
+rnadvancedlabs://tp6-camera/detail/[id]      # Détail photo
+```
+
+#### Plan de tests manuels
+
+##### Tests de permissions
+- [x] **Premier lancement** : Demande de permission caméra affichée
+- [x] **Refus de permission** : Interface explicite avec bouton "Ouvrir réglages"
+- [x] **Acceptation** : Accès direct à la caméra
+- [x] **Retour des réglages** : Permission accordée → accès fonctionnel
+
+##### Tests de capture
+- [x] **Prise de photo** : Bouton capture fonctionnel
+- [x] **Sauvegarde** : Photo stockée localement
+- [x] **Retour automatique** : Navigation vers galerie après capture
+- [x] **Basculement caméra** : Avant/arrière fonctionnel
+- [x] **Aperçu** : Miniature de la dernière photo visible
+
+##### Tests de galerie
+- [x] **Affichage** : Grille de 3 colonnes avec miniatures
+- [x] **Navigation** : Tap sur photo → écran détail
+- [x] **Rafraîchissement** : Liste mise à jour après capture/suppression
+- [x] **État vide** : Interface d'accueil sans photos
+- [x] **Statistiques** : Nombre et taille totale affichés
+
+##### Tests de détail
+- [x] **Affichage** : Image plein écran avec overlay
+- [x] **Actions** : Partager, Renommer, Galerie, Supprimer
+- [x] **Renommage** : Modal avec validation
+- [x] **Suppression** : Confirmation + retour galerie
+- [x] **Partage** : API native fonctionnelle
+- [x] **Sauvegarde galerie** : MediaLibrary avec permissions
+
+##### Tests de navigation
+- [x] **Onglet principal** : Accès depuis la barre de navigation
+- [x] **Stack interne** : Navigation entre galerie/caméra/détail
+- [x] **Retour** : Boutons retour fonctionnels
+- [x] **Deep links** : URLs directes vers chaque écran
+
+##### Tests de robustesse
+- [x] **Photos supprimées** : Gestion des fichiers manquants
+- [x] **Erreurs réseau** : Fonctionnement offline
+- [x] **Permissions refusées** : Fallback approprié
+- [x] **Stockage plein** : Gestion des erreurs d'espace
+
+#### Captures d'écran
+
+##### Démo complète
+<img src="./img/tp6/tp6-record-all-features.gif" alt="Démo TP6 — parcours complet" style="max-width:200px !important;">
+
+##### Captures d'écran - Galerie vide et écran caméra
+<img src="./img/tp6/no_photos.PNG" alt="Galerie vide" style="max-width:200px !important;">
+
+<img src="./img/tp6/camera.PNG" alt="Écran caméra" style="max-width:200px !important;">
+
+#### Status
+
+**Terminé** - Architecture complète en couches avec séparation des responsabilités, stockage local et gestion avancée des permissions
 
 ---
