@@ -1617,7 +1617,7 @@ lib/
 
 ##### Export/Import
 
-[Voir la vidéo Export/Import](./img/tp5/Export:Import.mov)
+[Voir la vidéo Export/Import](https://files.charlesremy.dev/Export%3AImport.mov)
 
 **Démonstration vidéo :**
 - Processus complet d'export JSON
@@ -1888,7 +1888,7 @@ rnadvancedlabs://tp6-camera/detail/[id]      # Détail photo
 #### Captures d'écran
 
 ##### Démo complète
-<img src="./img/tp6/tp6-record-all-features.gif" alt="Démo TP6 — parcours complet" style="max-width:200px !important;">
+<img src="https://files.charlesremy.dev/tp6-record-all-features.gif" alt="Démo TP6 — parcours complet" style="max-width:200px !important;">
 
 ##### Captures d'écran - Galerie vide et écran caméra
 <img src="./img/tp6/no_photos.PNG" alt="Galerie vide" style="max-width:200px !important;">
